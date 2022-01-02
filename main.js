@@ -3,8 +3,7 @@ const { Composer, Markup, Scenes, session, Telegraf } = require("telegraf");
 const bot = new Telegraf(TOKEN);
 const { enter, leave } = Scenes.Stage;
 const mongoose = require('mongoose');
-const mongoConnect = require('./DB/db').mongoConnect;
-
+const userModel = require("./DB/db");
 
 const replierClass = require("./pekBase");
 
@@ -26,17 +25,3 @@ bot.hears(/^какой я сегодня папуга$/i, async (ctx) => {
 });
 
 bot.launch();
-
-mongoConnect(() => {
-    app.listen(3000, () => {
-        try {
-            if(bot.launch()) {
-                console.log('Bot is online and Server are listening on http://localhost:3000');
-            }
-        } catch(err) {
-            console.log(err);
-            next(err);
-        }
-    });
-});
-
