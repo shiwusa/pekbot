@@ -11,3 +11,5 @@
 [23:32:13 2/0/2022] Connect to MongoDB.
 [23:44:58 2/0/2022] Start writing logs to ./logs/logs.txt
 [23:44:59 2/0/2022] Connect to MongoDB.
+[0:4:15 3/0/2022] Start writing logs to ./logs/logs.txt
+[0:4:17 3/0/2022] Connect to MongoDB.
