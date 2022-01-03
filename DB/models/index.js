@@ -1,4 +1,4 @@
-const Parrot = require('./parrot')
+const Parrot = require('./user')
 
 module.exports = {
     Parrot

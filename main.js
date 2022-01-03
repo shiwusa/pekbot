@@ -25,18 +25,18 @@ bot.hears(/^какой я сегодня папуга$/i, async (ctx) => {
     await ctx.replyWithPhoto(img, {caption: txt});
 });
 
-const Parrot = mongoose.model ('parrots');
+const User = mongoose.model ('users');
 
 bot.hears(/^register$/i, async (ctx) => {
-    const pek = new Parrot({
-        owner_id: `${ctx.message.from.id}`,
-        owner_username: `${ctx.message.from.username}`,
+    const user = new User({
+        user_id: `${ctx.message.from.id}`,
+        _username: `${ctx.message.from.username}`,
         pek_name: "poka cto tak"
     })
-    await ctx.reply("You have been registered with " + pek);
-    await pek.save()
-        .then(pek => console.log(pek))
-        .catch(e => console.log(e))
+    await ctx.reply("You have been registered with " + user);
+    await user.save()
+        .then(user => console.log(user))
+        .catch(user => console.log(user))
 });
 
 
