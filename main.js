@@ -36,7 +36,7 @@ bot.hears(/^register$/i, async (ctx) => {
     await ctx.reply("You have been registered with " + user);
     await user.save()
         .then(user => console.log(user))
-        .catch(user => console.log(user))
+        .catch(e => console.log(e))
 });
 
 
