@@ -8,7 +8,6 @@ const UserSchema = new Schema({
     is_bot: { type: Boolean, default: false },
     is_verified: { type: Boolean, default: false },
     is_blocked: { type: Boolean, default: false },
-    pek_name: {type: String, required: [true, "can't be blank"], index: true}
 });
 
 module.exports = mongoose.model('users', UserSchema);

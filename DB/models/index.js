@@ -1,5 +1,6 @@
-const Parrot = require('./user')
-
+const Parrot = require('./pek')
+const User = require ('./user')
 module.exports = {
-    Parrot
+    Parrot,
+    User
 }

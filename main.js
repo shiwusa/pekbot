@@ -26,17 +26,27 @@ bot.hears(/^какой я сегодня папуга$/i, async (ctx) => {
 });
 
 const User = mongoose.model ('users');
+const Pek = mongoose.model ('parrots');
 
 bot.hears(/^register$/i, async (ctx) => {
     const user = new User({
         user_id: `${ctx.message.from.id}`,
         _username: `${ctx.message.from.username}`,
-        pek_name: "poka cto tak"
     })
     await ctx.reply("You have been registered with " + user);
     await user.save()
         .then(user => console.log(user))
-        .catch(e => console.log(e))
+        .catch(e => console.log(e));
+ //я закончил в попытках создать сцену регистрации + считать введенное имя пепука
+    //нада: как-то сделать 4 класса и 4 вида пепуков, для каждого установить какие-то значения
+    const pek = new Pek ({
+        pek_name: "default",
+        pek_class: "will be created soon",
+        pek_species: "also in progress"
+    })
+    await pek.save()
+        .then(pek => console.log(pek))
+        .catch(e => console.log(e));
 });
 
 
