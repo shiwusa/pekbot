@@ -12,7 +12,7 @@
   "dependencies": {
     "mongoose": "^6.1.4",
     "mongoose-unique-validator": "^3.0.0",
-    "telegraf": "^4.3.0"
+    "telegraf": "3.39"
   },
   "devDependencies": {
     "mongodb": "^4.2.2"
