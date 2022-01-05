@@ -1,6 +1,11 @@
-const Parrot = require('./pek')
-const User = require ('./user')
+const LoveParrot = require('./lovePek');
+const KaParrot = require('./kaPek');
+const CaiqParrot = require('./caiqPek')
+const User = require ('./user');
+
 module.exports = {
-    Parrot,
-    User
+    LoveParrot,
+    User,
+    KaParrot,
+    CaiqParrot
 }

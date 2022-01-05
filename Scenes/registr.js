@@ -8,7 +8,9 @@ const mongoose = require('mongoose');
 require("../DB/models/index");
 
 const User = mongoose.model ('users');
-const Pek = mongoose.model ('parrots');
+const LoveParrot = mongoose.model ('love parrots');
+const KaParrot = mongoose.model ('kakariki parrots');
+const CaiqParrot = mongoose.model ('caique parrots');
 
 
 const nameScene = new Scene('name');
@@ -25,24 +27,12 @@ nameScene.on('text', async (ctx) => {
 const specScene = new Scene('species');
 
 specScene.enter(async (ctx) => {
-    await ctx.reply ("Choose species for your parrot: ", Markup.keyboard(["N", "K", "V"]).oneTime().resize().extra());
+    await ctx.reply ("Choose species for your parrot: ", Markup.keyboard(["Lovebird", "Kakariki", "Caique"]).oneTime().resize().extra());
 });
 
 specScene.on('text', async (ctx) =>{
     ctx.session.name = ctx.scene.state.name;
-    return ctx.scene.enter("class", {spec: ctx.message.text});
-});
-
-
-const classScene = new Scene ('class');
-
-classScene.enter(async (ctx) => {
-    await ctx.reply ("Choose class for your parrot: ", Markup.keyboard(["A", "B", "C"]).oneTime().resize().extra());
-});
-
-classScene.on('text', async (ctx) => {
-    ctx.session.spec = ctx.scene.state.spec;
-    await ctx.reply("Your info: species: " + ctx.session.spec + ", name: " + ctx.session.name + ", class: " + ctx.message.text);
+    await ctx.reply("Your info: species: " + ctx.message.text + ", name: " + ctx.session.name);
 
     const user = new User({
         user_id: `${ctx.message.from.id}`,
@@ -52,16 +42,34 @@ classScene.on('text', async (ctx) => {
     await user.save()
         .then(user => console.log(user))
         .catch(e => console.log(e));
-
-    const pek = new Pek ({
-        pek_name: ctx.session.name,
-        pek_class: ctx.message.text,
-        pek_species: ctx.session.spec
-    });
-    await pek.save()
-        .then(pek => console.log(pek))
-        .catch(e => console.log(e));
+    if (ctx.message.text === "Lovebird") {
+        const lovepek = new LoveParrot({
+            pek_name: ctx.session.name,
+            pek_species: true,
+        });
+        await lovepek.save()
+            .then(pek => console.log(pek))
+            .catch(e => console.log(e));
+    } else if (ctx.message.text === "Kakariki") {
+        const kapek = new KaParrot({
+            pek_name: ctx.session.name,
+            pek_species: true,
+        });
+        await kapek.save()
+            .then(pek => console.log(pek))
+            .catch(e => console.log(e));
+    } else if (ctx.message.text === "Caique") {
+        const capek = new CaiqParrot({
+            pek_name: ctx.session.name,
+            pek_species: true,
+        });
+        await capek.save()
+            .then(pek => console.log(pek))
+            .catch(e => console.log(e));
+    } else {
+        await ctx.reply("invalid class");
+    }
     return ctx.scene.leave;
 });
 
-module.exports = {nameScene, specScene, classScene}
+module.exports = {nameScene, specScene}

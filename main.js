@@ -14,7 +14,7 @@ const scene = require("./Scenes/registr");
 const replierClass = require("./pekBase");
 const replier = new replierClass();
 
-const stage = new Stage([scene.nameScene, scene.specScene, scene.classScene], { ttl: 10 })
+const stage = new Stage([scene.nameScene, scene.specScene], { ttl: 10 })
 
 bot.command("getid", async (ctx) => {
     await ctx.reply(ctx.message.message_id);
