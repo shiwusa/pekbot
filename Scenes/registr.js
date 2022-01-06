@@ -1,16 +1,14 @@
 const session = require("telegraf/session");
 const Stage = require("telegraf/stage");
 const Scene = require("telegraf/scenes/base");
-const Extra = require("telegraf/extra");
+//const Extra = require("telegraf/extra");
 const Markup = require("telegraf/markup");
 const { enter, leave } = Stage;
-const mongoose = require('mongoose');
-require("../DB/models/index");
 
-const User = mongoose.model ('users');
-const LoveParrot = mongoose.model ('love parrots');
-const KaParrot = mongoose.model ('kakariki parrots');
-const CaiqParrot = mongoose.model ('caique parrots');
+const {LoveParrot} = require("../DB/models");
+const {KaParrot} = require("../DB/models");
+const {CaiqParrot} = require("../DB/models");
+const {User} = require("../DB/models");
 
 
 const nameScene = new Scene('name');
@@ -23,7 +21,6 @@ nameScene.on('text', async (ctx) => {
     return ctx.scene.enter("species", { name: ctx.message.text });
 });
 
-
 const specScene = new Scene('species');
 
 specScene.enter(async (ctx) => {
@@ -35,7 +32,7 @@ specScene.on('text', async (ctx) =>{
     await ctx.reply("Your info: species: " + ctx.message.text + ", name: " + ctx.session.name);
 
     const user = new User({
-        user_id: `${ctx.message.from.id}`,
+        user_id: `${ctx.from.id}`,
         _username: `${ctx.message.from.username}`,
     })
     await ctx.reply("You have been registered");
@@ -71,5 +68,6 @@ specScene.on('text', async (ctx) =>{
     }
     return ctx.scene.leave;
 });
+
 
 module.exports = {nameScene, specScene}

@@ -4,7 +4,8 @@
   "description": "Telegram Bot for pepuks",
   "main": "index.js",
   "scripts": {
-    "start": "node main"
+    "start": "node main",
+    "type":"module"
   },
   "keywords": [],
   "author": "shiw u sa",
@@ -15,6 +16,10 @@
     "telegraf": "3.39"
   },
   "devDependencies": {
+    "@babel/cli": "^7.16.7",
+    "@babel/core": "^7.16.7",
+    "@babel/node": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
     "mongodb": "^4.2.2"
   }
 }
