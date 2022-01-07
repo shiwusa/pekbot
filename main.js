@@ -2,19 +2,13 @@ const TOKEN = require ("./token");
 const { Telegraf } = require("telegraf");
 const session = require("telegraf/session");
 const Stage = require("telegraf/stage");
-const Scene = require("telegraf/scenes/base");
-const Extra = require("telegraf/extra");
-const Markup = require("telegraf/markup");
-const { enter, leave } = Stage;
-const bot = new Telegraf(TOKEN);
 require("./DB/db");
+const bot = new Telegraf(TOKEN);
 const scene = require("./Scenes/registr");
+const replierClass = require("./controllers/pekBase");
 
-
-const replierClass = require("./pekBase");
 const {Parrot} = require("./DB/models");
 const {User} = require("./DB/models");
-
 
 const replier = new replierClass();
 
@@ -68,7 +62,5 @@ bot.command("showParrot", async (ctx) =>{
     });
 });
 
-//add photos to db //takoe
 
-//add comm for admin
 bot.launch()
