@@ -14,6 +14,7 @@ const scene = require("./Scenes/registr");
 //const {findUser} = require("./controllers/query");
 
 const replierClass = require("./pekBase");
+const {Parrot} = require("./DB/models");
 const {User} = require("./DB/models");
 
 
@@ -59,13 +60,20 @@ bot.command("deleteMe", async (ctx) =>{
 
 bot.command("showParrot", async (ctx) =>{
     let id = ctx.from.id;
-
-    User.findOneAndDelete({owner_id: id},  function (err, user) {
+    Parrot.findOne({owner_id: id}, 'owner_id pek_name pek_species',  function (err, pek) {
         if (err) return (err);
-        ctx.reply(`You was removed from db`);
+        ctx.reply(`Your telegram id: ${pek.owner_id},\nyour parrot name: ${pek.pek_name},\nyour parrot species: ${pek.pek_species}`);
+    });
+});
+
+bot.command("deleteParrot", async (ctx) =>{
+    let id = ctx.from.id;
+    Parrot.findOneAndDelete({owner_id: id},  function (err, pek) {
+        if (err) return (err);
+        ctx.reply(`Your was parrot removed from db`);
     });
 });
 //add photos to db //takoe
 //add comm for parrots
 //add comm for admin
-bot.launch();
+bot.launch()
