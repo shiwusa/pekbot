@@ -7,11 +7,9 @@ const Extra = require("telegraf/extra");
 const Markup = require("telegraf/markup");
 const { enter, leave } = Stage;
 const bot = new Telegraf(TOKEN);
-//const query = require("./controllers/query");
-//const {users} = require("./DB/db");
 require("./DB/db");
 const scene = require("./Scenes/registr");
-//const {findUser} = require("./controllers/query");
+
 
 const replierClass = require("./pekBase");
 const {Parrot} = require("./DB/models");
@@ -56,6 +54,10 @@ bot.command("deleteMe", async (ctx) =>{
         if (err) return (err);
         ctx.reply(`You was removed from db`);
     });
+    Parrot.findOneAndDelete({owner_id: id},  function (err, pek) {
+        if (err) return (err);
+        ctx.reply(`Your parrot was removed from db`);
+    });
 });
 
 bot.command("showParrot", async (ctx) =>{
@@ -66,14 +68,7 @@ bot.command("showParrot", async (ctx) =>{
     });
 });
 
-bot.command("deleteParrot", async (ctx) =>{
-    let id = ctx.from.id;
-    Parrot.findOneAndDelete({owner_id: id},  function (err, pek) {
-        if (err) return (err);
-        ctx.reply(`Your was parrot removed from db`);
-    });
-});
 //add photos to db //takoe
-//add comm for parrots
+
 //add comm for admin
 bot.launch()

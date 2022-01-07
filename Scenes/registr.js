@@ -27,8 +27,9 @@ specScene.enter(async (ctx) => {
 
 specScene.on('text', async (ctx) =>{
     ctx.session.name = ctx.scene.state.name;
-    await ctx.reply("Your info: species: " + ctx.message.text + ", name: " + ctx.session.name);
-
+    await ctx.reply("Your info: species: " + (ctx.message.text).toLowerCase() + ", name: " + ctx.session.name);
+    const spec = (ctx.message.text).toString()
+    if ((spec === "Lovebird") || (spec ==="Kakariki") || (spec ==="Caique")) {
     const user = new User({
         user_id: `${ctx.from.id}`,
         _username: `${ctx.message.from.username}`,
@@ -36,7 +37,6 @@ specScene.on('text', async (ctx) =>{
     await user.save()
         .then(user => console.log(user))
         .catch(e => console.log(e));
-    if(ctx.message.text === ("Lovebird" || "Kakariki" || "Caique")) {
         const parrot = new Parrot({
             owner_id: ctx.from.id,
             pek_name: ctx.session.name,
@@ -47,9 +47,9 @@ specScene.on('text', async (ctx) =>{
             .catch(e => console.log(e));
         await ctx.reply("You have been registered");
     } else {
-        await ctx.reply("invalid class, you haven`t been registered");
+        ctx.reply("Invalid class, try /register once more");
     }
-    return ctx.scene.leave;
+    await ctx.scene.leave();
 });
 
 
