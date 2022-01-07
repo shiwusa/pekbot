@@ -41,6 +41,7 @@ specScene.on('text', async (ctx) =>{
         .catch(e => console.log(e));
     if (ctx.message.text === "Lovebird") {
         const lovepek = new LoveParrot({
+            owner_id: ctx.from.id,
             pek_name: ctx.session.name,
             pek_species: true,
         });
@@ -49,6 +50,7 @@ specScene.on('text', async (ctx) =>{
             .catch(e => console.log(e));
     } else if (ctx.message.text === "Kakariki") {
         const kapek = new KaParrot({
+            owner_id: ctx.from.id,
             pek_name: ctx.session.name,
             pek_species: true,
         });
@@ -57,6 +59,7 @@ specScene.on('text', async (ctx) =>{
             .catch(e => console.log(e));
     } else if (ctx.message.text === "Caique") {
         const capek = new CaiqParrot({
+            owner_id: ctx.from.id,
             pek_name: ctx.session.name,
             pek_species: true,
         });

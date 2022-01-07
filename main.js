@@ -41,14 +41,20 @@ bot.command("start", async (ctx) => {
 });
 
 //from db
-bot.command("show", async (ctx) =>{
+bot.command("showMe", async (ctx) =>{
     let id = ctx.from.id;
     User.findOne({user_id: id}, 'user_id _username _id',  function (err, user) {
         if (err) return (err);
-        ctx.reply(`${user.user_id}, ${user._username}, ${user._id}`);
+        ctx.reply(`Your telegram id: ${user.user_id},\nyour username: ${user._username},\nyour id in db: ${user._id}`);
     });
 });
 
-
+bot.command("deleteMe", async (ctx) =>{
+    let id = ctx.from.id;
+    User.findOneAndDelete({owner_id: id},  function (err, user) {
+        if (err) return (err);
+        ctx.reply(`You was removed from db`);
+    });
+});
 
 bot.launch();
