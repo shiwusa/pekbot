@@ -57,4 +57,15 @@ bot.command("deleteMe", async (ctx) =>{
     });
 });
 
+bot.command("showParrot", async (ctx) =>{
+    let id = ctx.from.id;
+
+    User.findOneAndDelete({owner_id: id},  function (err, user) {
+        if (err) return (err);
+        ctx.reply(`You was removed from db`);
+    });
+});
+//add photos to db //takoe
+//add comm for parrots
+//add comm for admin
 bot.launch();

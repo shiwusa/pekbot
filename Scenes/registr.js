@@ -5,9 +5,7 @@ const Scene = require("telegraf/scenes/base");
 const Markup = require("telegraf/markup");
 const { enter, leave } = Stage;
 
-const {LoveParrot} = require("../DB/models");
-const {KaParrot} = require("../DB/models");
-const {CaiqParrot} = require("../DB/models");
+const {Parrot} = require("../DB/models");
 const {User} = require("../DB/models");
 
 
@@ -35,39 +33,21 @@ specScene.on('text', async (ctx) =>{
         user_id: `${ctx.from.id}`,
         _username: `${ctx.message.from.username}`,
     })
-    await ctx.reply("You have been registered");
     await user.save()
         .then(user => console.log(user))
         .catch(e => console.log(e));
-    if (ctx.message.text === "Lovebird") {
-        const lovepek = new LoveParrot({
+    if(ctx.message.text === ("Lovebird" || "Kakariki" || "Caique")) {
+        const parrot = new Parrot({
             owner_id: ctx.from.id,
             pek_name: ctx.session.name,
-            pek_species: true,
+            pek_species: ctx.message.text,
         });
-        await lovepek.save()
-            .then(pek => console.log(pek))
+        await parrot.save()
+            .then(parrot => console.log(parrot))
             .catch(e => console.log(e));
-    } else if (ctx.message.text === "Kakariki") {
-        const kapek = new KaParrot({
-            owner_id: ctx.from.id,
-            pek_name: ctx.session.name,
-            pek_species: true,
-        });
-        await kapek.save()
-            .then(pek => console.log(pek))
-            .catch(e => console.log(e));
-    } else if (ctx.message.text === "Caique") {
-        const capek = new CaiqParrot({
-            owner_id: ctx.from.id,
-            pek_name: ctx.session.name,
-            pek_species: true,
-        });
-        await capek.save()
-            .then(pek => console.log(pek))
-            .catch(e => console.log(e));
+        await ctx.reply("You have been registered");
     } else {
-        await ctx.reply("invalid class");
+        await ctx.reply("invalid class, you haven`t been registered");
     }
     return ctx.scene.leave;
 });
