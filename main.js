@@ -35,7 +35,7 @@ bot.command("start", async (ctx) => {
 });
 
 //from db
-bot.command("showMe", async (ctx) =>{
+bot.command("showme", async (ctx) =>{
     let id = ctx.from.id;
     User.findOne({user_id: id}, 'user_id _username _id',  function (err, user) {
         if (err) return (err);
@@ -43,7 +43,7 @@ bot.command("showMe", async (ctx) =>{
     });
 });
 
-bot.command("deleteMe", async (ctx) =>{
+bot.command("deleteme", async (ctx) =>{
     let id = ctx.from.id;
     User.findOneAndDelete({owner_id: id},  function (err) {
         if (err) return (err);
@@ -55,7 +55,7 @@ bot.command("deleteMe", async (ctx) =>{
     });
 });
 
-bot.command("showParrot", async (ctx) =>{
+bot.command("showparrot", async (ctx) =>{
     let id = ctx.from.id;
     Parrot.findOne({owner_id: id}, 'owner_id pek_name pek_species seeds',  function (err, pek) {
         if (err) return (err);

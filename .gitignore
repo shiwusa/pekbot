@@ -1,3 +1,5 @@
 token.js
 node_modules
 logs
+.idea
+.gitattributes
