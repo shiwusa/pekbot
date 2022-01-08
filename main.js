@@ -6,6 +6,7 @@ require("./DB/db");
 const bot = new Telegraf(TOKEN);
 const scene = require("./Scenes/registr");
 const replierClass = require("./controllers/pekBase");
+const {Markup} = require("telegraf");
 
 const {feedPek} = require("./controllers/pekActions");
 const {Parrot} = require("./DB/models");
@@ -27,6 +28,7 @@ bot.hears(/^какой я сегодня папуга$/i, async (ctx) => {
 });
 //command
 bot.command('register', (ctx) => ctx.scene.enter('name'));
+
 bot.command("getid", async (ctx) => {
     await ctx.reply(ctx.message.message_id);
 });
@@ -59,7 +61,7 @@ bot.command("showparrot", async (ctx) =>{
     let id = ctx.from.id;
     Parrot.findOne({owner_id: id}, 'owner_id pek_name pek_species seeds',  function (err, pek) {
         if (err) return (err);
-        ctx.reply(`Your telegram id: ${pek.owner_id},\nparrot name: ${pek.pek_name},\nparrot species: ${pek.pek_species},\nbalance: ${pek.seeds} seeds`);
+        ctx.reply(`Your telegram id: ${pek.owner_id},\nparrot name: ${pek.pek_name},\nparrot species: ${(pek.pek_species).toLowerCase()},\nbalance: ${pek.seeds} seeds`);
     });
 });
 
@@ -67,6 +69,18 @@ bot.command("feed", async  (ctx) => {
     let id = ctx.from.id;
     await feedPek(id);
     await ctx.reply("Added 50 seeds to balance");
+})
+const ACTION_TYPES = {
+    remove: 'remove'
+}
+
+bot.on('callback_query', async (ctx) => {
+    const actionType = ctx.callbackQuery.data.split(':')
+
+    if (actionType === ACTION_TYPES.remove) {
+        await ctx.reply('Removed', Markup.keyboard.remove())
+    }
+    return ctx.answerCbQuery()
 })
 
 bot.launch()

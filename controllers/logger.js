@@ -25,14 +25,6 @@ class Logger {
         console.log(`\x1b[34m${logDate} \x1b[33m${text}\x1b[0m`);
     }
 
-    cmd(ctx) {
-        const cmd = ctx.message.text;
-        const from = ctx.from.username || ctx.from.id;
-        const log = `cmd: ${cmd} from ${from}`;
-
-        this.add(log);
-    }
-
     toFile(filepath) {
         this.filepath = filepath;
     }
