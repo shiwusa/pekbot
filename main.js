@@ -7,6 +7,7 @@ const bot = new Telegraf(TOKEN);
 const scene = require("./Scenes/registr");
 const replierClass = require("./controllers/pekBase");
 
+const {feedPek} = require("./controllers/pekActions");
 const {Parrot} = require("./DB/models");
 const {User} = require("./DB/models");
 
@@ -44,11 +45,11 @@ bot.command("showMe", async (ctx) =>{
 
 bot.command("deleteMe", async (ctx) =>{
     let id = ctx.from.id;
-    User.findOneAndDelete({owner_id: id},  function (err, user) {
+    User.findOneAndDelete({owner_id: id},  function (err) {
         if (err) return (err);
         ctx.reply(`You was removed from db`);
     });
-    Parrot.findOneAndDelete({owner_id: id},  function (err, pek) {
+    Parrot.findOneAndDelete({owner_id: id},  function (err) {
         if (err) return (err);
         ctx.reply(`Your parrot was removed from db`);
     });
@@ -56,11 +57,16 @@ bot.command("deleteMe", async (ctx) =>{
 
 bot.command("showParrot", async (ctx) =>{
     let id = ctx.from.id;
-    Parrot.findOne({owner_id: id}, 'owner_id pek_name pek_species',  function (err, pek) {
+    Parrot.findOne({owner_id: id}, 'owner_id pek_name pek_species seeds',  function (err, pek) {
         if (err) return (err);
-        ctx.reply(`Your telegram id: ${pek.owner_id},\nyour parrot name: ${pek.pek_name},\nyour parrot species: ${pek.pek_species}`);
+        ctx.reply(`Your telegram id: ${pek.owner_id},\nparrot name: ${pek.pek_name},\nparrot species: ${pek.pek_species},\nbalance: ${pek.seeds} seeds`);
     });
 });
 
+bot.command("feed", async  (ctx) => {
+    let id = ctx.from.id;
+    await feedPek(id);
+    await ctx.reply("Added 50 seeds to balance");
+})
 
 bot.launch()
