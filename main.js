@@ -5,18 +5,20 @@ const Stage = require("telegraf/stage");
 require("./DB/db");
 const bot = new Telegraf(TOKEN);
 const scene = require("./Scenes/registr");
+const scene1 = require("./Scenes/share")
 const replierClass = require("./controllers/pekBase");
 const {userRegist} = require("./controllers/userActions");
 
-const {feedPek, pekExist} = require("./controllers/pekActions");
+const {feedPek, pekExistById} = require("./controllers/pekActions");
 const {Parrot, User} = require("./DB/models");
 
 const replier = new replierClass();
 
-const stage = new Stage([scene.nameScene, scene.specScene], { ttl: 10 })
+const stage = new Stage([scene.nameScene, scene.specScene, scene1.shareScene, scene1.amountScene], { ttl: 10 })
 
 bot.use(session())
 bot.use(stage.middleware())
+
 
 //hears
 bot.hears(/^какой я сегодня папуга$/i, async (ctx) => {
@@ -75,7 +77,7 @@ bot.command("deleteme", async (ctx) =>{
 
 bot.command("showparrot", async (ctx) =>{
     let id = ctx.from.id;
-    if (await pekExist(id)) {
+    if (await pekExistById(id)) {
         Parrot.findOne({owner_id: id}, 'owner_id pek_name pek_species seeds', function (err, pek) {
             if (err) return (err);
             ctx.reply(`Your parrot name: ${pek.pek_name},\nparrot species: ${(pek.pek_species).toLowerCase()},\nbalance: ${pek.seeds} seeds`);
@@ -87,16 +89,19 @@ bot.command("showparrot", async (ctx) =>{
 
 bot.command("feed", async  (ctx) => {
     let id = ctx.from.id;
-    if (await pekExist(id)) {
+    if (await pekExistById(id)) {
         await ctx.reply("Your birdie is eating... ")
         setTimeout(() => {
             feedPek(id), ctx.reply("The parrot finished eating, added 50 seeds to balance")
-        }, 3600 * 1000);
+        }, 6 * 1000);
     } else {
         await ctx.reply("Who you gonna feed, buddy?\nTry /register first")
     }
 });
 
+bot.command("share", async (ctx) => {
+    await ctx.scene.enter ('share');
+})
 const ACTION_TYPES = {
     remove: 'remove'
 }

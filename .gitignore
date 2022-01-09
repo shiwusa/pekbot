@@ -1,5 +1,5 @@
 token.js
 node_modules
-logs
+logs/logs.txt
 .idea
 .gitattributes

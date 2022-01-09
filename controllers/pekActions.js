@@ -6,8 +6,12 @@ async function feedPek (id) {
     await amount.save();
 }
 
-async function pekExist (id) {
-    return await Parrot.exists({owner_id: id});
+async function pekExistById (id) {
+    return await Parrot.exists({owner_id: id})
 }
 
-module.exports = {feedPek, pekExist}
+async function pekExistByName (name) {
+    return await Parrot.exists(({pek_name: name}))
+}
+
+module.exports = {feedPek, pekExistById, pekExistByName}
