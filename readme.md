@@ -25,3 +25,5 @@ This is the play bot where you can create your own parrot and take care of it.
 - to provide levels system, fights, inventory etc
 - add possibility to store images in DB
 - add donate functions
+### Some screenshots:
+![Start](/screenshors/photo_2022-01-09_19-34-20.jpg "start")
