@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Logger = require('../controllers/logger');
+const mongoose = require("mongoose");
+const Logger = require("../controllers/logger");
 
 mongoose.Promise = global.Promise;
 
@@ -10,12 +10,10 @@ const uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.vxkvc.mongodb.net/
 
 mongoose.connect(uri, { useNewUrlParser: true });
 
-
-mongoose.connection.on('error', async (err) => {
+mongoose.connection.on("error", async (err) => {
     Logger.add(`Connection error ${err}`);
 });
 
-mongoose.connection.on('open', () => {
-    Logger.add('Connect to MongoDB.');
+mongoose.connection.on("open", () => {
+    Logger.add("Connect to MongoDB.");
 });
-

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const PekSchema = new Schema({
@@ -8,4 +8,4 @@ const PekSchema = new Schema({
     seeds: {type: Number, default: 0, required: false, index: true}
 });
 
-module.exports = mongoose.model('parrots', PekSchema);
+module.exports = mongoose.model("parrots", PekSchema);

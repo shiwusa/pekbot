@@ -1,10 +1,10 @@
-const fs = require('fs');
+const fs = require("fs");
 
 class Logger {
     constructor() {
         if (!Logger.instance) {
             this.logs = [];
-            this.filepath = './logs/logs.txt';
+            this.filepath = "./logs/logs.txt";
             this.add = this.add.bind(this);
             this.toFile = this.toFile.bind(this);
             Logger.instance = this;
@@ -18,8 +18,8 @@ class Logger {
         const logDate = `[${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}]`;
         const log = `${text}`;
         this.logs.push(log);
-        if (!fs.existsSync('./logs')) {
-            fs.mkdirSync('logs');
+        if (!fs.existsSync("./logs")) {
+            fs.mkdirSync("logs");
         }
         fs.appendFileSync(this.filepath, `${logDate} ${text}\n`);
         console.log(`\x1b[34m${logDate} \x1b[33m${text}\x1b[0m`);
