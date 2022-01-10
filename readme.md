@@ -18,7 +18,7 @@ This is the play bot where you can create your own parrot and take care of it.
 - /showparrot - show info about your birdie
 - /feed - feed parrot and earn seeds
 - /share - share seeds from your balance with other parrots
-- getid - get message id
+- /getid - get message id
 
 ### Future plans:
 ---
