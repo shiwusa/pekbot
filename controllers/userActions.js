@@ -1,7 +1,7 @@
-const { User } = require("../DB/models");
+import { User } from "../DB/models";
 
-async function userRegist(id) {
-    return await User.exists({ user_id: id });
+export class UserActions {
+    async static userRegist(id) {
+        return await User.exists({user_id: id});
+    }
 }
-
-module.exports = { userRegist };

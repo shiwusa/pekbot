@@ -1,11 +1,7 @@
-const mongoose = require("mongoose");
-require("./parrot");
-require("./user");
+import mongoose from "mongoose";
+import "./parrot";
+import "./user";
 
-const User = mongoose.model("users");
-const Parrot = mongoose.model("parrots");
+export const User = mongoose.model("users");
+export const Parrot = mongoose.model("parrots");
 
-module.exports = {
-    User,
-    Parrot,
-};

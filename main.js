@@ -1,19 +1,19 @@
-const TOKEN = require("./token");
-const { Telegraf, Markup } = require("telegraf");
+import TOKEN from "./token";
+import {Telegraf, Markup, Stage, session} from "telegraf";
+import replierClass from "./controllers/pekBase";
+import scene from "./Scenes/registr";
+import scene1 from "./Scenes/share";
+import {UserActions} from "./controllers/userActions";
+import {ParrotActions} from "./controllers/pekActions";
+import { Parrot, User } from"./DB/models";
+import "./DB/db";
+
+const ACTION_TYPES = {
+    remove: "remove",
+};
+
 const bot = new Telegraf(TOKEN);
-const session = require("telegraf/session");
-const Stage = require("telegraf/stage");
-const replierClass = require("./controllers/pekBase");
-const scene = require("./Scenes/registr");
-const scene1 = require("./Scenes/share");
-const use = require("./controllers/userActions");
-const pek = require("./controllers/pekActions");
-require("./DB/db");
-
-const { Parrot, User } = require("./DB/models");
-
 const replier = new replierClass();
-
 const stage = new Stage(
     [scene.nameScene, scene.specScene, scene1.shareScene, scene1.amountScene],
     { ttl: 1000 }
@@ -33,7 +33,7 @@ bot.hears(/^какой я сегодня папуга$/i, async (ctx) => {
 //commands
 bot.command("register", async (ctx) => {
     const id = ctx.from.id;
-    if (await use.userRegist(id)) {
+    if (await UserActions.userRegist(id)) {
         await ctx.reply("You are already registered");
     } else {
         await ctx.scene.enter("name");
@@ -51,7 +51,7 @@ bot.command("start", async (ctx) => {
 //from db
 bot.command("showme", async (ctx) => {
     const id = ctx.from.id;
-    if (await use.userRegist(id)) {
+    if (await UserActions.userRegist(id)) {
         User.findOne(
             { user_id: id },
             "user_id _username _id",
@@ -67,7 +67,7 @@ bot.command("showme", async (ctx) => {
 
 bot.command("deleteme", async (ctx) => {
     let id = ctx.from.id;
-    if (await use.userRegist(id)) {
+    if (await UserActions.userRegist(id)) {
         User.findOneAndDelete({ owner_id: id }, function (err) {
             if (err) return err;
             ctx.reply(`You was removed from db`);
@@ -83,7 +83,7 @@ bot.command("deleteme", async (ctx) => {
 
 bot.command("showparrot", async (ctx) => {
     let id = ctx.from.id;
-    if (await pek.pekExistById(id)) {
+    if (await ParrotActions.pekExistById(id)) {
         Parrot.findOne(
             { owner_id: id },
             "owner_id pek_name pek_species seeds",
@@ -99,10 +99,10 @@ bot.command("showparrot", async (ctx) => {
 
 bot.command("feed", async (ctx) => {
     let id = ctx.from.id;
-    if (await pek.pekExistById(id)) {
+    if (await ParrotActions.pekExistById(id)) {
         await ctx.reply("Your birdie is eating... ");
         setTimeout(() => {
-            pek.feedPek(id),
+            ParrotActions.feedPek(id),
                 ctx.reply("The parrot finished eating, added 50 seeds to your balance");
         }, 6 * 1000);
     } else {
@@ -113,10 +113,6 @@ bot.command("feed", async (ctx) => {
 bot.command("share", async (ctx) => {
     await ctx.scene.enter("share");
 });
-
-const ACTION_TYPES = {
-    remove: "remove",
-};
 
 bot.action("callback_query", async (ctx) => {
     const actionType = ctx.callbackQuery.data;

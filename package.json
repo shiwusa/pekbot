@@ -1,11 +1,12 @@
 {
-  "name": "Pekbot",
+  "name": "pekbot",
   "version": "1.0.1",
   "description": "Telegram Bot for pepuks",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node main",
-    "type":"module"
+    "type": "module"
   },
   "keywords": [],
   "author": "shiw u sa",

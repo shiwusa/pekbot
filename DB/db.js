@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const Logger = require("../controllers/logger");
+import mongoose from "mongoose";
+import Logger from "../controllers/logger";
 
 mongoose.Promise = global.Promise;
 

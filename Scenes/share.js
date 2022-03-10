@@ -1,14 +1,13 @@
-const Scene = require("telegraf/scenes/base");
-const use = require("../controllers/userActions");
-const pek = require("../controllers/pekActions");
+import {BaseScene} from "telegraf";
+import {UserActions} from "../controllers/userActions";
+import {ParrotActions} from "../controllers/pekActions";
+import {Parrot} from "../DB/models";
 
-const { Parrot } = require("../DB/models");
-
-const shareScene = new Scene("share");
-const amountScene = new Scene("amount");
+const shareScene = new BaseScene("share");
+const amountScene = new BaseScene("amount");
 
 shareScene.enter(async (ctx) => {
-    if (await use.userRegist(ctx.from.id)) {
+    if (await UserActions.userRegist(ctx.from.id)) {
         await ctx.reply("Enter the name of parrot you want to share seeds with:");
     } else {
         await ctx.reply("Smth went wrong... check info or try /register");
@@ -17,7 +16,7 @@ shareScene.enter(async (ctx) => {
 });
 
 shareScene.on("text", async (ctx) => {
-    if (await pek.pekExistByName(ctx.message.text)) {
+    if (await ParrotActions.pekExistByName(ctx.message.text)) {
         return ctx.scene.enter("amount", { name: ctx.message.text });
     } else {
         await ctx.reply("Smth went wrong... check info or try /register");
@@ -45,4 +44,4 @@ amountScene.on("text", async (ctx) => {
     await ctx.scene.leave();
 });
 
-module.exports = { shareScene, amountScene };
+export default { shareScene, amountScene };

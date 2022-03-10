@@ -1,10 +1,8 @@
-const Scene = require("telegraf/scenes/base");
-const Markup = require("telegraf/markup");
+import {BaseScene, Markup} from "telegraf";
+import {Parrot, User} from "../DB/models";
 
-const { Parrot, User } = require("../DB/models");
-
-const nameScene = new Scene("name");
-const specScene = new Scene("species");
+const nameScene = new BaseScene("name");
+const specScene = new BaseScene("species");
 
 nameScene.enter(async (ctx) => {
     await ctx.reply("Enter a name for your parrot: ");
@@ -58,4 +56,4 @@ specScene.on("text", async (ctx) => {
     await ctx.scene.leave();
 });
 
-module.exports = { nameScene, specScene };
+export default { nameScene, specScene };

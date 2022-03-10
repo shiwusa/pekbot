@@ -1,6 +1,6 @@
 const random = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
-class replierClass {
+export default class replierClass {
     onWhichParrot(username) {
         const variant = random(1, 7);
         const pekBase = {
@@ -32,5 +32,3 @@ class replierClass {
         return pekBase[variant];
     }
 }
-
-module.exports = replierClass;

@@ -1,4 +1,4 @@
-const fs = require("fs");
+import fs from "fs";
 
 class Logger {
     constructor() {
@@ -30,4 +30,4 @@ class Logger {
     }
 }
 
-module.exports = new Logger();
+export default new Logger();

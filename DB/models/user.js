@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -9,4 +9,4 @@ const UserSchema = new Schema({
     is_blocked: { type: Boolean, default: false },
 });
 
-module.exports = mongoose.model("users", UserSchema);
+export default mongoose.model("users", UserSchema);
