@@ -7,7 +7,7 @@ const shareScene = new BaseScene("share");
 const amountScene = new BaseScene("amount");
 
 shareScene.enter(async (ctx) => {
-    if (await UserActions.userRegist(ctx.from.id)) {
+    if (await UserActions.register(ctx.from.id)) {
         await ctx.reply("Enter the name of parrot you want to share seeds with:");
     } else {
         await ctx.reply("Smth went wrong... check info or try /register");
@@ -16,7 +16,7 @@ shareScene.enter(async (ctx) => {
 });
 
 shareScene.on("text", async (ctx) => {
-    if (await ParrotActions.pekExistByName(ctx.message.text)) {
+    if (await ParrotActions.doExistByName(ctx.message.text)) {
         return ctx.scene.enter("amount", { name: ctx.message.text });
     } else {
         await ctx.reply("Smth went wrong... check info or try /register");
@@ -34,9 +34,9 @@ amountScene.on("text", async (ctx) => {
     amountSender.seeds -= parseInt(ctx.message.text);
     if (amountSender.seeds > 0) {
         await amountSender.save();
-        const amountReciever = await Parrot.findOne({ pek_name: ctx.session.name });
-        amountReciever.seeds += parseInt(ctx.message.text);
-        await amountReciever.save();
+        const amountReceiver = await Parrot.findOne({ pek_name: ctx.session.name });
+        amountReceiver.seeds += parseInt(ctx.message.text);
+        await amountReceiver.save();
         await ctx.reply("Seeds were sent");
     } else {
         await ctx.reply("You don`t have enough seeds");

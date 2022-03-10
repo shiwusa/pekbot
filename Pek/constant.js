@@ -1,0 +1,1 @@
+export const PARROT_TYPES = ["Lovebird", "Kakariki", "Caique"];

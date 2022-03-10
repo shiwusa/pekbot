@@ -1,5 +1,6 @@
 import {BaseScene, Markup} from "telegraf";
 import {Parrot, User} from "../DB/models";
+import {PARROT_TYPES} from "../Pek/constant";
 
 const nameScene = new BaseScene("name");
 const specScene = new BaseScene("species");
@@ -15,7 +16,7 @@ nameScene.on("text", async (ctx) => {
 specScene.enter(async (ctx) => {
     await ctx.reply(
         "Choose species for your parrot: ",
-        Markup.keyboard(["Lovebird", "Kakariki", "Caique"])
+        Markup.keyboard(PARROT_TYPES)
             .oneTime()
             .resize()
             .extra()
@@ -25,7 +26,7 @@ specScene.enter(async (ctx) => {
 specScene.on("text", async (ctx) => {
     ctx.session.name = ctx.scene.state.name;
     const spec = ctx.message.text.toString();
-    if (spec === "Lovebird" || spec === "Kakariki" || spec === "Caique") {
+    if (PARROT_TYPES.includes(spec)) {
         const user = new User({
             user_id: `${ctx.from.id}`,
             _username: `${ctx.message.from.username}`,
@@ -51,7 +52,7 @@ specScene.on("text", async (ctx) => {
             ctx.session.name
         );
     } else {
-        ctx.reply("Invalid class, try /register once more");
+        await ctx.reply("Invalid class, try /register once more");
     }
     await ctx.scene.leave();
 });

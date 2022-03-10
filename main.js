@@ -1,8 +1,8 @@
-import TOKEN from "./token";
+import {TOKEN} from "./config";
 import {Telegraf, Markup, Stage, session} from "telegraf";
 import replierClass from "./controllers/pekBase";
-import scene from "./Scenes/registr";
-import scene1 from "./Scenes/share";
+import RegisterScenes from "./Scenes/register";
+import ShareScenes from "./Scenes/share";
 import {UserActions} from "./controllers/userActions";
 import {ParrotActions} from "./controllers/pekActions";
 import { Parrot, User } from"./DB/models";
@@ -15,7 +15,7 @@ const ACTION_TYPES = {
 const bot = new Telegraf(TOKEN);
 const replier = new replierClass();
 const stage = new Stage(
-    [scene.nameScene, scene.specScene, scene1.shareScene, scene1.amountScene],
+    [RegisterScenes.nameScene, RegisterScenes.specScene, ShareScenes.shareScene, ShareScenes.amountScene],
     { ttl: 1000 }
 );
 
@@ -33,7 +33,7 @@ bot.hears(/^какой я сегодня папуга$/i, async (ctx) => {
 //commands
 bot.command("register", async (ctx) => {
     const id = ctx.from.id;
-    if (await UserActions.userRegist(id)) {
+    if (await UserActions.register(id)) {
         await ctx.reply("You are already registered");
     } else {
         await ctx.scene.enter("name");
@@ -51,7 +51,7 @@ bot.command("start", async (ctx) => {
 //from db
 bot.command("showme", async (ctx) => {
     const id = ctx.from.id;
-    if (await UserActions.userRegist(id)) {
+    if (await UserActions.register(id)) {
         User.findOne(
             { user_id: id },
             "user_id _username _id",
@@ -67,7 +67,7 @@ bot.command("showme", async (ctx) => {
 
 bot.command("deleteme", async (ctx) => {
     let id = ctx.from.id;
-    if (await UserActions.userRegist(id)) {
+    if (await UserActions.register(id)) {
         User.findOneAndDelete({ owner_id: id }, function (err) {
             if (err) return err;
             ctx.reply(`You was removed from db`);
@@ -83,7 +83,7 @@ bot.command("deleteme", async (ctx) => {
 
 bot.command("showparrot", async (ctx) => {
     let id = ctx.from.id;
-    if (await ParrotActions.pekExistById(id)) {
+    if (await ParrotActions.doExistById(id)) {
         Parrot.findOne(
             { owner_id: id },
             "owner_id pek_name pek_species seeds",
@@ -99,10 +99,10 @@ bot.command("showparrot", async (ctx) => {
 
 bot.command("feed", async (ctx) => {
     let id = ctx.from.id;
-    if (await ParrotActions.pekExistById(id)) {
+    if (await ParrotActions.doExistById(id)) {
         await ctx.reply("Your birdie is eating... ");
         setTimeout(() => {
-            ParrotActions.feedPek(id),
+            ParrotActions.feed(id),
                 ctx.reply("The parrot finished eating, added 50 seeds to your balance");
         }, 6 * 1000);
     } else {
