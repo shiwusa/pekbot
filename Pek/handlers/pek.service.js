@@ -1,4 +1,4 @@
-import ReplierClass from "../../controllers/pekBase";
+import ReplierClass from "../../controllers/replier";
 import PekRepository from "./pek.repository";
 
 

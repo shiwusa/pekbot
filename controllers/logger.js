@@ -25,7 +25,8 @@ class Logger {
         console.log(`\x1b[34m${logDate} \x1b[33m${text}\x1b[0m`);
     }
 
-    error(text) {
+    error(error) {
+        const text = error.message ? error.message : error;
         this.add(`Error! ${text}`);
     }
 

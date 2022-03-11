@@ -110,6 +110,8 @@ bot.action("callback_query", async (ctx) => { //still here, will add CBQueryServ
     return ctx.answerCbQuery();
 });
 
+bot.catch(Logger.error);
+
 bot.launch()
     .then(() => {
         Logger.add(`Bot launched`)

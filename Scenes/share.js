@@ -1,13 +1,16 @@
 import {BaseScene} from "telegraf";
-import {UserActions} from "../controllers/userActions";
-import {ParrotActions} from "../controllers/pekActions";
 import {Parrot} from "../DB/models";
+import UserService from "../User/handlers/user.service";
+import PekService from "../Pek/handlers/pek.service";
+
+const userService = new UserService();
+const pekService = new PekService();
 
 const shareScene = new BaseScene("share");
 const amountScene = new BaseScene("amount");
 
 shareScene.enter(async (ctx) => {
-    if (await UserActions.register(ctx.from.id)) {
+    if (await userService.doExistById(ctx.from.id)) {
         await ctx.reply("Enter the name of parrot you want to share seeds with:");
     } else {
         await ctx.reply("Smth went wrong... check info or try /register");
@@ -16,7 +19,7 @@ shareScene.enter(async (ctx) => {
 });
 
 shareScene.on("text", async (ctx) => {
-    if (await ParrotActions.doExistByName(ctx.message.text)) {
+    if (await pekService.doExistByName(ctx.message.text)) {
         return ctx.scene.enter("amount", { name: ctx.message.text });
     } else {
         await ctx.reply("Smth went wrong... check info or try /register");
@@ -30,6 +33,7 @@ amountScene.enter(async (ctx) => {
 
 amountScene.on("text", async (ctx) => {
     ctx.session.name = ctx.scene.state.name;
+    /* beginning */ //TODO: pek service and repository
     const amountSender = await Parrot.findOne({ owner_id: ctx.from.id });
     amountSender.seeds -= parseInt(ctx.message.text);
     if (amountSender.seeds > 0) {
@@ -41,6 +45,7 @@ amountScene.on("text", async (ctx) => {
     } else {
         await ctx.reply("You don`t have enough seeds");
     }
+    /* end */
     await ctx.scene.leave();
 });
 

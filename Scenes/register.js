@@ -27,6 +27,7 @@ specScene.on("text", async (ctx) => {
     ctx.session.name = ctx.scene.state.name;
     const spec = ctx.message.text.toString();
     if (PARROT_TYPES.includes(spec)) {
+        /* beginning */  //TODO: user repository
         const user = new User({
             user_id: `${ctx.from.id}`,
             _username: `${ctx.message.from.username}`,
@@ -35,6 +36,8 @@ specScene.on("text", async (ctx) => {
             .save()
             .then((user) => console.log(user))
             .catch((e) => console.log(e));
+        /* end */
+        /* beginning */  //TODO: pek repository
         const parrot = new Parrot({
             owner_id: ctx.from.id,
             pek_name: ctx.session.name,
@@ -44,6 +47,7 @@ specScene.on("text", async (ctx) => {
             .save()
             .then((parrot) => console.log(parrot))
             .catch((e) => console.log(e));
+        /* end */
         await ctx.reply("You have been registered");
         await ctx.reply(
             "Your info: species: " +
