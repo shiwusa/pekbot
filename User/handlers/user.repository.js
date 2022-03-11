@@ -1,11 +1,9 @@
-import {User} from "../../DB/models";
+import {User} from "../../DB/models/index.js";
 
-export default class UserRepository {
-    constructor() {
-        //this.replier = new ReplierClass();
-    }
+class UserRepository {
     async doExistById(id) {
         return await User.exists({user_id: id});
     }
-
 }
+
+export default new UserRepository();

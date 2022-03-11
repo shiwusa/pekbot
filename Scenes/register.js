@@ -1,6 +1,7 @@
-import {BaseScene, Markup} from "telegraf";
-import {Parrot, User} from "../DB/models";
-import {PARROT_TYPES} from "../Pek/constant";
+import BaseScene from "telegraf/scenes/base.js";
+import Markup from "telegraf/markup.js";
+import {Parrot, User} from "../DB/models/index.js";
+import {PARROT_TYPES} from "../Pek/constant.js";
 
 const nameScene = new BaseScene("name");
 const specScene = new BaseScene("species");
@@ -41,7 +42,7 @@ specScene.on("text", async (ctx) => {
         const parrot = new Parrot({
             owner_id: ctx.from.id,
             pek_name: ctx.session.name,
-            pek_species: ctx.message.text,
+            pek_specie: ctx.message.text,
         });
         await parrot
             .save()

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import Logger from "../controllers/logger";
-import {DB_URI} from "../config";
+import Logger from "../controllers/logger.js";
+import {DB_URI} from "../config.js";
 
 mongoose.Promise = global.Promise;
 

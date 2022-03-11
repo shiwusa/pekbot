@@ -1,17 +1,12 @@
-import UserRepository from "./user.repository";
-import {UserActions} from "../../controllers/userActions";
+import UserRepository from "./user.repository.js";
 
-
-export default class UserService {
-    constructor() {
-        this.userRepository = new UserRepository();
-    }
+class UserService {
     async doExistById(id) {
-        return this.userRepository.doExistById(id);
+        return UserRepository.doExistById(id);
     }
     async beginRegistration(ctx) {
         const {id} = ctx.from;
-        const user = await this.userRepository.doExistById(id);
+        const user = await UserRepository.doExistById(id);
         if (!user) {
             await ctx.scene.enter("name");
         } else {
@@ -19,3 +14,5 @@ export default class UserService {
         }
     }
 }
+
+export default new UserService();

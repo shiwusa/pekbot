@@ -1,10 +1,6 @@
-import {Parrot} from "../../DB/models";
+import {Parrot} from "../../DB/models/index.js";
 
-export default class PekRepository {
-    constructor() {
-        //this.replier = new ReplierClass();
-    }
-
+class PekRepository {
     async feed(id, seedsAmount) {
         let amount = await Parrot.findOne({owner_id: id});
         amount.seeds += seedsAmount;
@@ -19,3 +15,5 @@ export default class PekRepository {
         return await Parrot.exists({pek_name: name});
     }
 }
+
+export default new PekRepository();

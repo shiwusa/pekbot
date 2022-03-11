@@ -1,16 +1,13 @@
-import {BaseScene} from "telegraf";
-import {Parrot} from "../DB/models";
-import UserService from "../User/handlers/user.service";
-import PekService from "../Pek/handlers/pek.service";
-
-const userService = new UserService();
-const pekService = new PekService();
+import BaseScene from "telegraf/scenes/base.js";
+import {Parrot} from "../DB/models/index.js";
+import UserService from "../User/handlers/user.service.js";
+import PekService from "../Pek/handlers/pek.service.js";
 
 const shareScene = new BaseScene("share");
 const amountScene = new BaseScene("amount");
 
 shareScene.enter(async (ctx) => {
-    if (await userService.doExistById(ctx.from.id)) {
+    if (await UserService.doExistById(ctx.from.id)) {
         await ctx.reply("Enter the name of parrot you want to share seeds with:");
     } else {
         await ctx.reply("Smth went wrong... check info or try /register");
@@ -19,7 +16,7 @@ shareScene.enter(async (ctx) => {
 });
 
 shareScene.on("text", async (ctx) => {
-    if (await pekService.doExistByName(ctx.message.text)) {
+    if (await PekService.doExistByName(ctx.message.text)) {
         return ctx.scene.enter("amount", { name: ctx.message.text });
     } else {
         await ctx.reply("Smth went wrong... check info or try /register");

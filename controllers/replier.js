@@ -1,10 +1,15 @@
-import {WHICH_PARROT} from "../Pek/constant";
-
+import {WHICH_PARROT} from "../Pek/constant.js";
 const random = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
-export default class ReplierClass {
+class ReplierClass {
     onWhichParrot(username) {
-        const variant = random(0, 7);
-        return `@${username} ` + WHICH_PARROT[variant];
+        const variantNumber = random(0, 7);
+        const variant = WHICH_PARROT[variantNumber];
+        return {
+            text: `@${username} ` + variant.text,
+            img: variant.img
+        }
     }
 }
+
+export default new ReplierClass();

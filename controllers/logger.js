@@ -15,7 +15,7 @@ class Logger {
 
     add(text) {
         const date = new Date();
-        const logDate = `[${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}]`;
+        const logDate = `[${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} ${date.getDate()}/${date.getUTCMonth() + 1}/${date.getFullYear()}]`;
         const log = `${text}`;
         this.logs.push(log);
         if (!fs.existsSync("./logs")) {
@@ -27,7 +27,7 @@ class Logger {
 
     error(error) {
         const text = error.message ? error.message : error;
-        this.add(`Error! ${text}`);
+        this.add(`Error! Error text:\n${text}`);
     }
 
     toFile(filepath) {
