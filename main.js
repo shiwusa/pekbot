@@ -2,13 +2,11 @@ import {TOKEN} from "./config";
 import {Telegraf, Markup, Stage, session} from "telegraf";
 import RegisterScenes from "./Scenes/register";
 import ShareScenes from "./Scenes/share";
-import {UserActions} from "./controllers/userActions";
-import {ParrotActions} from "./controllers/pekActions";
 import { Parrot, User } from"./DB/models";
 import "./DB/db";
 import PekService from "./Pek/handlers/pek.service";
 import UserService from "./User/handlers/user.service";
-
+import Logger from "./controllers/logger";
 const pekService = new PekService();
 const userService = new UserService();
 const bot = new Telegraf(TOKEN);
@@ -91,10 +89,10 @@ bot.command("feed", async (ctx) => { //PARROT
     let id = ctx.from.id;
     if (await pekService.doExistById(id)) {
         await ctx.reply("Your birdie is eating... ");
-        setTimeout(() => {
-            ParrotActions.feed(id),
-                ctx.reply("The parrot finished eating, added 50 seeds to your balance");
-        }, 6 * 1000);
+        setTimeout(async () => {
+            await pekService.feed(id);
+            await ctx.reply("The parrot finished eating, added 50 seeds to your balance");
+        }, 6 * 1000); //6 * 1000 is a magic number. TODO: add constant for it
     } else {
         await ctx.reply("Who you gonna feed, buddy?\nTry /register first");
     }
@@ -112,4 +110,8 @@ bot.action("callback_query", async (ctx) => { //still here, will add CBQueryServ
     return ctx.answerCbQuery();
 });
 
-bot.launch();
+bot.launch()
+    .then(() => {
+        Logger.add(`Bot launched`)
+    })
+    .catch(Logger.error);

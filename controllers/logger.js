@@ -25,6 +25,10 @@ class Logger {
         console.log(`\x1b[34m${logDate} \x1b[33m${text}\x1b[0m`);
     }
 
+    error(text) {
+        this.add(`Error! ${text}`);
+    }
+
     toFile(filepath) {
         this.filepath = filepath;
     }
