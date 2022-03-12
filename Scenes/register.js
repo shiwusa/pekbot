@@ -16,7 +16,7 @@ nameScene.on("text", async (ctx) => {
 
 specScene.enter(async (ctx) => {
     await ctx.reply(
-        "Choose species for your parrot: ",
+        "Choose specie for your parrot: ",
         Markup.keyboard(PARROT_TYPES)
             .oneTime()
             .resize()

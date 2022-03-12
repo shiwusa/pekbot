@@ -7,7 +7,16 @@ class PekService {
         await ctx.replyWithPhoto(res.img, { caption: res.text });
     }
 
+    async getFedExpiration(id) {
+        return PekRepository.getFedExpiration(id);
+    }
+
     async feed(id, seedsAmount = 50) {
+        const fedExpire = await this.getFedExpiration(id);
+        const timeNow = Date.now();
+        if (timeNow < fedExpire) {
+            //await ctx.reply(`You cannot feed ur pek yet!`);
+        }
         await PekRepository.feed(id, seedsAmount);
     }
 

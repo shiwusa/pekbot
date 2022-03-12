@@ -57,7 +57,7 @@ bot.command("showme", async (ctx) => { //USER
 });
 
 bot.command("deleteme", async (ctx) => { //USER
-    let id = ctx.from.id;
+    const {id} = ctx.from;
     if (await UserService.doExistById(id)) {
         User.findOneAndDelete({ owner_id: id }, async function (err) {
             if (err) return err;
@@ -73,7 +73,7 @@ bot.command("deleteme", async (ctx) => { //USER
 });
 
 bot.command("showparrot", async (ctx) => { //PARROT
-    let id = ctx.from.id;
+    const {id} = ctx.from;
     if (await PekService.doExistById(id)) {
         Parrot.findOne(
             { owner_id: id },
@@ -89,7 +89,7 @@ bot.command("showparrot", async (ctx) => { //PARROT
 });
 
 bot.command("feed", async (ctx) => { //PARROT
-    let id = ctx.from.id;
+    const {id} = ctx.from;
     if (await PekService.doExistById(id)) {
         await ctx.reply("Your birdie is eating... ");
         setTimeout(async () => {

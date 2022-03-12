@@ -1,6 +1,8 @@
 export const PARROT_TYPES = ["Lovebird", "Kakariki", "Caique"];
 const newParrot = (img, text) => ({img, text});
 
+export const FEED_EXPIRES_IN = 28800000;
+
 export const WHICH_PARROT = [
     newParrot(`https://i.pinimg.com/originals/d2/17/88/d21788aef69c83faaf75c7bcc879f0d8.jpg`,
         `сегодня ты милый папуга!`),
