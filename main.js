@@ -9,7 +9,8 @@ import { Parrot, User } from"./DB/models/index.js";
 import "./DB/db.js";
 import PekService from "./Pek/handlers/pek.service.js";
 import UserService from "./User/handlers/user.service.js";
-import Logger from "./controllers/logger.js";
+import LoggerService from "./Logger/logger.service.js";
+import {LogTypes} from "./Logger/types/LogTypes.js";
 
 const sessionToken = process.argv[2] ? process.argv[2] : TOKEN;
 const bot = new Telegraf(sessionToken);
@@ -113,10 +114,12 @@ bot.action("callback_query", async (ctx) => { //still here, will add CBQueryServ
     return ctx.answerCbQuery();
 });
 
-bot.catch((e) => Logger.error(e));
+bot.catch(LoggerService.error);
 
 bot.launch()
     .then(() => {
-        Logger.add(`Bot launched`)
+        LoggerService.write({
+            text: `Bot launched`
+        });
     })
-    .catch((e) => Logger.error(e));
+    .catch(LoggerService.error);

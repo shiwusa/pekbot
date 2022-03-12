@@ -1,16 +1,16 @@
 import fs from "fs";
 
-class Logger {
+class TextLogger {
     constructor() {
-        if (!Logger.instance) {
+        if (!TextLogger.instance) {
             this.logs = [];
             this.filepath = "./logs/logs.txt";
             this.add = this.add.bind(this);
             this.toFile = this.toFile.bind(this);
-            Logger.instance = this;
+            TextLogger.instance = this;
             this.add(`Start writing logs to ${this.filepath}`);
         }
-        return Logger.instance;
+        return TextLogger.instance;
     }
 
     add(text) {
@@ -35,4 +35,4 @@ class Logger {
     }
 }
 
-export default new Logger();
+export default new TextLogger();
