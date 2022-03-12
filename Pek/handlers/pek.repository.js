@@ -1,5 +1,5 @@
 import {Parrot} from "../../DB/models/index.js";
-import {FEED_EXPIRES_IN} from "../constant";
+import {FEED_EXPIRES_IN} from "../constant.js";
 
 class PekRepository {
     async feed(id, seedsAmount) {
