@@ -2,6 +2,8 @@ import BaseScene from "telegraf/scenes/base.js";
 import Markup from "telegraf/markup.js";
 import {Parrot, User} from "../DB/models/index.js";
 import {PARROT_TYPES} from "../Pek/constant.js";
+import PekService from "../Pek/handlers/pek.service.js";
+import UserService from "../User/handlers/user.service.js";
 
 const nameScene = new BaseScene("name");
 const specScene = new BaseScene("species");
@@ -28,31 +30,19 @@ specScene.on("text", async (ctx) => {
     ctx.session.name = ctx.scene.state.name;
     const spec = ctx.message.text.toString();
     if (PARROT_TYPES.includes(spec)) {
-        /* beginning */  //TODO: user repository
-        const user = new User({
-            user_id: `${ctx.from.id}`,
-            _username: `${ctx.message.from.username}`,
+        await UserService.createUser ({
+            user_id: ctx.from.id,
+            _username: ctx.message.from.username,
         });
-        await user
-            .save()
-            .then((user) => console.log(user))
-            .catch((e) => console.log(e));
-        /* end */
-        /* beginning */  //TODO: pek repository
-        const parrot = new Parrot({
+        await PekService.createPek({
             owner_id: ctx.from.id,
             pek_name: ctx.session.name,
-            pek_specie: ctx.message.text,
+            pek_specie: spec,
         });
-        await parrot
-            .save()
-            .then((parrot) => console.log(parrot))
-            .catch((e) => console.log(e));
-        /* end */
         await ctx.reply("You have been registered");
         await ctx.reply(
             "Your info: species: " +
-            ctx.message.text.toLowerCase() +
+            spec +
             ", name: " +
             ctx.session.name
         );
