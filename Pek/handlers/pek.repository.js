@@ -1,5 +1,6 @@
-import {Parrot} from "../../DB/models/index.js";
+import {Parrot, User} from "../../DB/models/index.js";
 import {FEED_EXPIRES_IN} from "../constant.js";
+import Logger from "../../controllers/logger.js";
 
 class PekRepository {
     async feed(id, seedsAmount) {
@@ -20,6 +21,30 @@ class PekRepository {
 
     async doExistByName(name) {
         return await Parrot.exists({pek_name: name});
+    }
+
+    async getPekByOwner(id) {
+      Parrot.findOne(
+           {owner_id: id},
+           "owner_id pek_name pek_specie seeds",
+           async function (err, pek) {
+               if (err) Logger.error(err);
+           }
+       );
+    }
+
+    async deletePekById(id) {
+        Parrot.findOneAndDelete({ owner_id: id }, async function (err) {
+            if (err) Logger.error(err);
+        });
+    }
+
+    async createPek(pekObj) {
+        const parrot = new Parrot(pekObj);
+        await parrot
+            .save()
+            .then((parrot) => console.log(parrot))
+            .catch(Logger.error);
     }
 }
 

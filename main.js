@@ -9,6 +9,8 @@ import { Parrot, User } from"./DB/models/index.js";
 import "./DB/db.js";
 import PekService from "./Pek/handlers/pek.service.js";
 import UserService from "./User/handlers/user.service.js";
+import Logger from "./controllers/logger.js";
+import {MINUTE_IN_MS} from "./Pek/constant.js";
 import LoggerService from "./Logger/logger.service.js";
 import {LogTypes} from "./Logger/types/LogTypes.js";
 
@@ -114,12 +116,10 @@ bot.action("callback_query", async (ctx) => { //still here, will add CBQueryServ
     return ctx.answerCbQuery();
 });
 
-bot.catch(LoggerService.error);
+bot.catch((e) => Logger.error(e));
 
 bot.launch()
     .then(() => {
-        LoggerService.write({
-            text: `Bot launched`
-        });
+        Logger.add(`Bot launched`)
     })
-    .catch(LoggerService.error);
+    .catch((e) => Logger.error(e));
