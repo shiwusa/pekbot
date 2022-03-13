@@ -13,6 +13,7 @@ import Logger from "./controllers/logger.js";
 import {MINUTE_IN_MS} from "./Pek/constant.js";
 import LoggerService from "./Logger/logger.service.js";
 import {LogTypes} from "./Logger/types/LogTypes.js";
+import {MINUTE_IN_MS} from "./Pek/constant.js";
 
 const sessionToken = process.argv[2] ? process.argv[2] : TOKEN;
 const bot = new Telegraf(sessionToken);
@@ -43,53 +44,11 @@ bot.command("start", async (ctx) => {
 });
 
 
-bot.command("showme", async (ctx) => { //USER
-    const {id} = ctx.from;
-    if (await UserService.doExistById(id)) {
-        User.findOne(
-            { user_id: id },
-            "user_id _username _id",
-            async function (err, user) {
-                if (err) return err;
-                await ctx.reply(`Your telegram id: ${user.user_id},\nyour username: @${user._username},\nyour id in db: ${user._id}`);
-            }
-        );
-    } else {
-        await ctx.reply("Try /register first");
-    }
-});
+bot.command("showme", UserService.showUser);
 
-bot.command("deleteme", async (ctx) => { //USER
-    const {id} = ctx.from;
-    if (await UserService.doExistById(id)) {
-        User.findOneAndDelete({ owner_id: id }, async function (err) {
-            if (err) return err;
-            await ctx.reply(`You was removed from db`);
-        });
-        Parrot.findOneAndDelete({ owner_id: id }, async function (err) {
-            if (err) return err;
-            await ctx.reply(`Your parrot was removed from db`);
-        });
-    } else {
-        await ctx.reply("You aren`t even registered...");
-    }
-});
+bot.command("deleteme", UserService.deleteUserById); //USER
 
-bot.command("showparrot", async (ctx) => { //PARROT
-    const {id} = ctx.from;
-    if (await PekService.doExistById(id)) {
-        Parrot.findOne(
-            { owner_id: id },
-            "owner_id pek_name pek_specie seeds",
-            async function (err, pek) {
-                if (err) return err;
-                await ctx.reply(`Your parrot name: ${pek.pek_name},\nparrot specie: ${pek.pek_specie.toLowerCase()},\nbalance: ${pek.seeds} seeds`);
-            }
-        );
-    } else {
-        await ctx.reply("You don`t have parrot...");
-    }
-});
+bot.command("showparrot", PekService.showPek);
 
 bot.command("feed", async (ctx) => { //PARROT
     const {id} = ctx.from;
@@ -98,7 +57,7 @@ bot.command("feed", async (ctx) => { //PARROT
         setTimeout(async () => {
             await PekService.feed(id);
             await ctx.reply("The parrot finished eating, added 50 seeds to your balance");
-        }, 6 * 1000); //6 * 1000 is a magic number. TODO: add constant for it
+        }, MINUTE_IN_MS);
     } else {
         await ctx.reply("Who you gonna feed, buddy?\nTry /register first");
     }
