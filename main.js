@@ -13,7 +13,6 @@ import Logger from "./controllers/logger.js";
 import {MINUTE_IN_MS} from "./Pek/constant.js";
 import LoggerService from "./Logger/logger.service.js";
 import {LogTypes} from "./Logger/types/LogTypes.js";
-import {MINUTE_IN_MS} from "./Pek/constant.js";
 
 const sessionToken = process.argv[2] ? process.argv[2] : TOKEN;
 const bot = new Telegraf(sessionToken);
@@ -31,6 +30,8 @@ bot.use(stage.middleware());
 
 //hears
 bot.hears(/^какой я сегодня папуга$/i, PekService.whichParrot);
+
+bot.hears(/^сменить имя на /i, PekService.updatePekName);
 
 //commands
 bot.command("register", UserService.beginRegistration);

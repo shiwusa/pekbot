@@ -1,6 +1,7 @@
 import {Parrot, User} from "../../DB/models/index.js";
 import {FEED_EXPIRES_IN} from "../constant.js";
 import Logger from "../../controllers/logger.js";
+import LoggerService from "../../Logger/logger.service.js";
 
 class PekRepository {
     async feed(id, seedsAmount) {
@@ -45,6 +46,10 @@ class PekRepository {
             .save()
             .then((parrot) => console.log(parrot))
             .catch(Logger.error);
+    }
+
+    async updatePek (id, updateObj) {
+        await Parrot.updateOne({owner_id: id}, updateObj).catch(LoggerService.error);
     }
 }
 
