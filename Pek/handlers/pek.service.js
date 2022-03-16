@@ -46,6 +46,20 @@ class PekService {
         await PekRepository.createPek(pekObj)
     }
 
+    async updatePek (id, obj) {
+        return PekRepository.updatePek(id, obj);
+    }
+
+    async updatePekName (ctx) {
+        const text = ctx.message.text.toString();
+        const name = text.slice(14, text.length);
+        const {id} = ctx.from;
+        const updObj = {
+            pek_name: name,
+        }
+        await this.updatePek(id,updObj);
+        await ctx.reply("Name was updated");
+    }
 }
 
 export default new PekService();
