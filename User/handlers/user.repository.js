@@ -1,5 +1,5 @@
 import {User} from "../../DB/models/index.js";
-import Logger from "../../controllers/logger.js";
+import LoggerService from "../../Logger/logger.service.js";
 
 class UserRepository {
     async doExistById(id) {
@@ -9,17 +9,12 @@ class UserRepository {
     async getUserById(id) {
         User.findOne(
             {user_id: id},
-            "user_id _username _id",
-            async function (err, user) {
-                if (err) Logger.error(err);
-            }
-        );
+            "user_id _username _id"
+        ).catch(LoggerService.error);
     }
 
     async deleteUserById(id) {
-        User.findOneAndDelete({owner_id: id}, async function (err) {
-            if (err) Logger.error(err);
-        });
+        User.findOneAndDelete({owner_id: id}).catch(LoggerService.error);
     }
 
     async createUser(userObj) {
@@ -27,7 +22,7 @@ class UserRepository {
         await user
             .save()
             .then((user) => console.log(user))
-            .catch(Logger.error);
+            .catch(LoggerService.error);
     }
 }
 export default new UserRepository();

@@ -1,6 +1,6 @@
 import {Parrot, User} from "../../DB/models/index.js";
 import {FEED_EXPIRES_IN} from "../constant.js";
-import Logger from "../../controllers/logger.js";
+import LoggerService from "../../Logger/logger.service.js";
 
 class PekRepository {
     async feed(id, seedsAmount) {
@@ -26,17 +26,12 @@ class PekRepository {
     async getPekByOwner(id) {
       Parrot.findOne(
            {owner_id: id},
-           "owner_id pek_name pek_specie seeds",
-           async function (err, pek) {
-               if (err) Logger.error(err);
-           }
-       );
+           "owner_id pek_name pek_specie seeds"
+       ).catch(LoggerService.error);
     }
 
     async deletePekById(id) {
-        Parrot.findOneAndDelete({ owner_id: id }, async function (err) {
-            if (err) Logger.error(err);
-        });
+        Parrot.findOneAndDelete({ owner_id: id }).catch(LoggerService.error);
     }
 
     async createPek(pekObj) {
@@ -44,7 +39,7 @@ class PekRepository {
         await parrot
             .save()
             .then((parrot) => console.log(parrot))
-            .catch(Logger.error);
+            .catch(LoggerService.error);
     }
 }
 
