@@ -20,6 +20,10 @@ class LoggerService {
         console.log(JSON.stringify(err));
         LoggerRepository.write(logObj);
     }
+
+    getLogs (perPage, page) {
+        return LoggerRepository.getLogs(perPage, page);
+    }
 }
 
 export default new LoggerService();
